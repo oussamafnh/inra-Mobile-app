@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BackHandler, TouchableWithoutFeedback, Image } from 'react-native';
 import { Div, Text, Button, Input, Icon } from 'react-native-magnus';
 import { useRouter } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
+import { saveItem, getItem, deleteItem } from '../utils/authToken';
 import axios from 'axios';
 
 export default function Login() {
@@ -48,12 +48,12 @@ export default function Login() {
       if (status === 'nonloged') {
         setErrorMessage(message);
       } else {
-        await SecureStore.setItemAsync('authToken', authToken);
+        await saveItem('authToken', authToken);
         setErrorMessage('');
 
         if (role === 'chercheur') {
-          await SecureStore.setItemAsync('fullName', fullName);
-          await SecureStore.setItemAsync('id', id);
+          await saveItem('fullName', fullName);
+          await saveItem('id', id);
           router.push('/chercheur');
         } else if (role === 'admin') {
           router.push('/admin');
